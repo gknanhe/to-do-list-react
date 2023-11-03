@@ -1,0 +1,272 @@
+import React, { Fragment, useEffect } from "react";
+import { useState } from "react";
+import { Dialog, Listbox, Transition } from "@headlessui/react";
+import close from "../assets/icons/x-close.svg";
+import Categories from "./Categories";
+
+//category array
+// const categories = [
+//   { id: 1, category: "Health", unavailable: false },
+//   { id: 2, category: "Education", unavailable: false },
+//   { id: 3, category: "Persional", unavailable: false },
+//   { id: 4, category: "Family", unavailable: true },
+//   { id: 5, category: "Work", unavailable: false },
+// ];
+const categories = [
+  { name: "Heath" },
+  { name: "Education" },
+  { name: "Persional" },
+  { name: "Family" },
+  { name: "Work" },
+];
+
+const Modal = () => {
+  let [isOpen, setIsOpen] = useState(false);
+  //todos from storage
+  const [todos, setTodos] = useState([]);
+
+  //fetch todos form local storage
+  //   useEffect(() => {
+  //     const storedTodos = JSON.parse(localStorage.getItem("todos"));
+  //     if (storedTodos) {
+  //       setTodos(storedTodos);
+  //     }
+
+  //   }, []);
+  useEffect(() => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (storedTodos) {
+      const todosArray = Array.isArray(storedTodos)
+        ? storedTodos
+        : [storedTodos];
+      setTodos(todosArray);
+    } else {
+      setTodos([]);
+    }
+  }, []);
+
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [task, setTask] = useState("");
+  const [discription, setDiscription] = useState("");
+  const [date, setDate] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+
+  const handleCategoryChange = (selectedCategory) => {
+    setSelectedCategory(selectedCategory);
+  };
+
+  const handleSubmit = async (e) => {
+    //FormEvent<HTMLFormElement> is used to specify the type of the e parameter in the handleSubmit function If you simply write e instead of specifying the type as FormEvent<HTMLFormElement>, TypeScript will still allow it, but you lose some of the benefits that TypeScript provides in terms of type checking and code documentation.
+    // prevent the page to reload
+    e.preventDefault();
+    setSubmitting(true);
+
+    //create new to do
+    const newTodo = {
+      id: Math.random(),
+      task: task,
+      discription: discription,
+      date: date,
+      category: selectedCategory.name,
+      createdAt: Date.now(),
+      completed: false,
+    };
+    console.log(selectedCategory);
+
+    // Serialize the todo object to a JSON string.
+    // const todoJson = JSON.stringify(newTodo);
+    // // Store the JSON string in local storage with the key `todos`.
+    // localStorage.setItem("todos", JSON.stringify([...todos, newTodo]));
+    // if (todos.length > 0) {
+    //   // Iterate over the todos array.
+    //   setTodos([...todos, newTodo]);
+    // }
+
+    setTodos((prevTodos) => {
+      const updatedTodos = [...prevTodos, newTodo];
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+      return updatedTodos;
+    });
+
+    setSubmitting(false);
+    setTask("");
+    setDiscription("");
+    setSelectedCategory(categories[0]);
+    setDate("");
+    closeModel();
+
+    // const storedTodos = JSON.parse(localStorage.getItem("todos"));
+
+    // for (const todo of storedTodos) {
+    // console.log(storedTodos);
+    // }
+  };
+
+  //set date
+  const handleChangeDate = (e) => {
+    const date = e.target.value;
+    setDate(date);
+  };
+
+  //set category
+
+  const openModel = () => setIsOpen(true);
+
+  const closeModel = () => setIsOpen(false);
+
+  return (
+    <>
+      <button
+        type="button"
+        // className="btn py-3 px-3 bg-white rounded-2xl"
+        onClick={openModel}
+      >
+        <div className="fixed bottom-[100px]  right-[100px] w-14 h-14  bg-purple-500 rounded-full flex items-center justify-center text-xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="34"
+            height="34"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="feather feather-plus bg-purple-500 "
+          >
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </div>
+      </button>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" onClose={closeModel} className="dialog-container">
+          <div className="min-h-screen px-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0"></Dialog.Overlay>
+            </Transition.Child>
+
+            {/* just for making model align middle trick */}
+            <span className="inline-block h-screen align-middle" />
+
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="Opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveto="opacity-0 scale-95"
+            >
+              <div className="dialog-content ">
+                <div className="flex flex-col">
+                  <div className="flex justify-between">
+                    <div className="p-3  ">
+                      <div className="font-bold text-xl text-slate-700">
+                        Creacte Task
+                      </div>{" "}
+                    </div>
+                    <img
+                      src={close}
+                      alt="close"
+                      height={24}
+                      width={24}
+                      className="cursor-pointer"
+                      onClick={closeModel}
+                    />
+                  </div>
+                </div>
+
+                <form
+                  className="flex flex-col mt-5 gap-2"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="dialog-input_container relative">
+                    <div>
+                      <label
+                        htmlFor="task"
+                        className="text-sm font-medium text-gray-700 absolute top-[-12px] bg-white px-1"
+                      >
+                        Task Name
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        id="task"
+                        value={task}
+                        onChange={(e) => setTask(e.target.value)}
+                        //   placeholder="Enter task"
+                        className=" dialog-input"
+                      />
+                    </div>
+                  </div>
+                  <div className="dialog-input_container relative">
+                    <div>
+                      <label
+                        htmlFor="discription"
+                        className="text-sm font-medium text-gray-700 absolute top-[-12px] bg-white px-1"
+                      >
+                        Task Discription
+                      </label>
+                      <textarea
+                        required
+                        type="text"
+                        id="discription"
+                        value={discription}
+                        onChange={(e) => setDiscription(e.target.value)}
+                        //   placeholder="Enter task"
+                        className=" dialog-textarea"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="dialog-input_container relative">
+                    <div>
+                      <label
+                        htmlFor="date"
+                        className="text-sm font-medium text-gray-700 absolute top-[-12px] bg-white px-1"
+                      >
+                        Task Deadline
+                      </label>
+                      <input
+                        required
+                        type="date"
+                        id="date"
+                        // value={discription}
+                        onChange={handleChangeDate}
+                        //   placeholder="Enter task"
+                        className=" dialog-textarea"
+                      />
+                    </div>
+                  </div>
+                  <div className="border border-blue-200 rounded-[10px] flex justify-center w-full z-50">
+                    <Categories
+                      selected={selectedCategory}
+                      onCategoryChange={handleCategoryChange}
+                    />
+                  </div>
+
+                  <button type="submit" className="dialog-btn">
+                    {isSubmitting ? "Submitting..." : "Create To Do"}
+                  </button>
+                </form>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+  );
+};
+
+export default Modal;

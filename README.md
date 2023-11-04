@@ -1,4 +1,15 @@
-# React + Vite
+# ToDo App
+
+this is simple todo list app where user can create , update, delete, and mark as done to todods.
+
+## Installation
+
+fork the repo or download the code.
+in vs code run
+``` npm install
+
+To run the App
+``` npm run dev
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

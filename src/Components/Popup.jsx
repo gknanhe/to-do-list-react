@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import state from "../store";
+import { useSnapshot } from "valtio";
+import state, { openModal, closeModal } from "../store";
 import { deleteTodo } from "../store";
 
-const TaskOptions = ({ id }) => {
+const TaskOptions = ({ id, todo }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const snap = useSnapshot(state);
 
   //DELETE TODO
   const handleDelete = () => {
     // Call the deleteTodo function with the todo id
     deleteTodo(id);
+  };
+
+  const handleEdit = () => {
+    // Call the deleteTodo function with the todo id
+    // setIsOpen(true);
+    openModal(todo);
+    toggleMenu();
   };
 
   const toggleMenu = () => {
@@ -58,6 +68,7 @@ const TaskOptions = ({ id }) => {
             <a
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={handleEdit}
             >
               Edit
             </a>

@@ -20,17 +20,17 @@ const categories = [
   },
   {
     name: "Education",
-    color: "#FEFFAC",
-    bg: "#45FFCA",
-    border: "#FFB6D9",
-    text: "#D67BFF",
+    color: "#ff9a3c",
+    bg: "#ffc93c",
+    border: "#ff6f3c",
+    text: "#155263",
   },
   {
     name: "Persional",
-    color: "#00337C",
-    bg: "#13005A",
-    border: "#1C82AD",
-    text: "#03C988",
+    color: "#5b70f3",
+    bg: "#80ffdb",
+    border: "#55e0a3",
+    text: "#4850b9",
   },
   {
     name: "Family",
@@ -59,7 +59,7 @@ export default function Categories({ selected, onCategoryChange }) {
       <Listbox value={selectedCategory} onChange={handleCategoryChange}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{selected.name}</span>
+            <span className="block truncate">{selected?.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               {/* <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"

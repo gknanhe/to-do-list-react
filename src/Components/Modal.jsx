@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import close from "../assets/icons/x-close.svg";
 import Categories from "./Categories";
-import state, { addTodo } from "../store";
+import state, { addTodo, openModal, closeModal, editTodo } from "../store";
 import { useSnapshot } from "valtio";
 
 //ARRAY OF CATEGORIES
@@ -56,26 +56,36 @@ const categories = [
 const Modal = () => {
   const snap = useSnapshot(state);
 
-  let [isOpen, setIsOpen] = useState(false);
+  // let [isOpen, setIsOpen] = useState(snap.isOpen);
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [task, setTask] = useState("");
   const [discription, setDiscription] = useState("");
   const [date, setDate] = useState("");
-
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
+  //Extract editing todo from state
+  const editingTodo = snap.editingTodo;
+
   useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos"));
-    if (storedTodos) {
-      state.todos = storedTodos;
+    // const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    // if (storedTodos) {
+    //   state.todos = storedTodos;
+    // }
+
+    // If editingTodo is present, populate the form fields
+    if (editingTodo) {
+      setTask(editingTodo.task);
+      setDiscription(editingTodo.discription);
+      setDate(editingTodo.date);
+      setSelectedCategory(editingTodo.category);
     }
-  }, []);
+  }, [editingTodo]);
 
   //HANDLE CATEGORY CHANGE
 
   const handleCategoryChange = (selectedCategory) => {
-    console.log(selectedCategory);
+    // console.log(selectedCategory);
     setSelectedCategory(selectedCategory);
   };
 
@@ -83,20 +93,33 @@ const Modal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    let newTodo;
+    //If editingTodo is present, edit the todo, else add a new todo
+    if (editingTodo) {
+      const updatedTodo = {
+        ...editingTodo,
+        task,
+        discription,
+        date,
+        category: selectedCategory,
+      };
 
-    //create new to do
-    const newTodo = {
-      id: Math.random(),
-      task: task,
-      discription: discription,
-      date: date,
-      category: selectedCategory,
-      createdAt: new Date().toISOString(),
-      completed: false,
-    };
-    // console.log(selectedCategory);
+      editTodo(updatedTodo);
+    } else {
+      //create new to do
+      newTodo = {
+        id: Math.random(),
+        task: task,
+        discription: discription,
+        date: date,
+        category: selectedCategory,
+        createdAt: new Date().toISOString(),
+        completed: false,
+      };
+      // console.log(selectedCategory);
 
-    addTodo(newTodo);
+      addTodo(newTodo);
+    }
 
     //SET TO EMPTY
     setSubmitting(false);
@@ -104,7 +127,7 @@ const Modal = () => {
     setDiscription("");
     setSelectedCategory(categories[0]);
     setDate("");
-    closeModel();
+    closeModal();
   };
 
   //set date
@@ -115,16 +138,16 @@ const Modal = () => {
 
   //set category
 
-  const openModel = () => setIsOpen(true);
+  // const openModel = () => setIsOpen(true);
 
-  const closeModel = () => setIsOpen(false);
+  // const closeModel = () => setIsOpen(false);
 
   return (
     <>
       <button
         type="button"
         // className="btn py-3 px-3 bg-white rounded-2xl"
-        onClick={openModel}
+        onClick={openModal}
       >
         <div className="fixed bottom-[100px] shadowBg right-[100px] w-14 h-14  bg-purple-500 rounded-full flex items-center justify-center text-xl">
           <svg
@@ -145,8 +168,8 @@ const Modal = () => {
         </div>
       </button>
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" onClose={closeModel} className="dialog-container">
+      <Transition appear show={snap.isOpen} as={Fragment}>
+        <Dialog as="div" onClose={closeModal} className="dialog-container">
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
               as={Fragment}
@@ -186,7 +209,7 @@ const Modal = () => {
                       height={24}
                       width={24}
                       className="cursor-pointer"
-                      onClick={closeModel}
+                      onClick={closeModal}
                     />
                   </div>
                 </div>

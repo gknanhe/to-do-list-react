@@ -3,11 +3,19 @@ import Task from "./Task";
 import Modal from "./Modal";
 import state from "../store";
 import { useSnapshot } from "valtio";
-import TaskOptions from "./Popup";
+// import TaskOptions from "./Popup";
 
 const Home = () => {
   const snap = useSnapshot(state);
 
+  useEffect(() => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (storedTodos) {
+      state.todos = storedTodos;
+    }
+  }, [state.todos.$]);
+
+  // console.log(state.todos);
   // const [todos, setTodos] = useState([]);
 
   //fetch todos form local storage
@@ -48,7 +56,7 @@ const Home = () => {
       {snap.todos.length > 0 &&
         snap.todos.map((todo) => {
           // console.log(todo, ++count); // Log each todo
-          return <Task key={todo.id} todo={todo} />;
+          return <Task todo={todo} key={todo.id} />;
         })}
 
       <Modal />

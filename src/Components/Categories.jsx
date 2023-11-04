@@ -2,12 +2,50 @@ import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 // import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
+// const categories = [
+//   { name: "Heath", color: "#ffdf3d" },
+//   { name: "Education", color: "#ff8e24" },
+//   { name: "Persional", color: "#e843fe" },
+//   { name: "Family", color: "#1fff44" },
+//   { name: "Work", color: "#248eff" },
+// ];
+
 const categories = [
-  { name: "Heath" },
-  { name: "Education" },
-  { name: "Persional" },
-  { name: "Family" },
-  { name: "Work" },
+  {
+    name: "Heath",
+    color: "#4942E4",
+    bg: "#190482",
+    border: "#4942E4",
+    text: "#C4B0FF",
+  },
+  {
+    name: "Education",
+    color: "#FEFFAC",
+    bg: "#45FFCA",
+    border: "#FFB6D9",
+    text: "#D67BFF",
+  },
+  {
+    name: "Persional",
+    color: "#00337C",
+    bg: "#13005A",
+    border: "#1C82AD",
+    text: "#03C988",
+  },
+  {
+    name: "Family",
+    color: "#3C79F5",
+    bg: "#6C00FF",
+    border: "#2DCDDF",
+    text: "#F2DEBA",
+  },
+  {
+    name: "Work",
+    color: "#176B87",
+    bg: "#04364A",
+    border: "#64CCC5",
+    text: "#DAFFFB",
+  },
 ];
 
 export default function Categories({ selected, onCategoryChange }) {
@@ -39,13 +77,25 @@ export default function Categories({ selected, onCategoryChange }) {
               {categories.map((category, personIdx) => (
                 <Listbox.Option
                   key={personIdx}
+                  // className={({ active }) =>
+                  //   `relative cursor-default select-none py-2 pl-10 pr-4 bg-[${
+                  //     category.color
+                  //   }] ${
+                  //     active
+                  //       ? `bg-[${category.color}] text-amber-900`
+                  //       : "text-gray-900"
+                  //   }`
+                  // }
+
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? "bg-amber-100 text-amber-900" : "text-gray-900"
+                    `relative cursor-default select-none py-2 pl-10  pr-4  ${
+                      active ? `bg-[#5B69FF] text-white` : "text-gray-900"
                     }`
                   }
                   value={category}
                 >
+                  {/* {console.log(category.color)} */}
+
                   {({ selected }) => (
                     <>
                       <span

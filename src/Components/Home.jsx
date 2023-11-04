@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
 import Task from "./Task";
 import Modal from "./Modal";
+import state from "../store";
+import { useSnapshot } from "valtio";
+import TaskOptions from "./Popup";
+
 const Home = () => {
-  const [todos, setTodos] = useState([]);
+  const snap = useSnapshot(state);
+
+  // const [todos, setTodos] = useState([]);
 
   //fetch todos form local storage
-  useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos"));
-    if (storedTodos) {
-      setTodos(storedTodos);
-      console.log(typeof todos);
-    }
-  }, []);
+  // useEffect(
+  //   () => {
+  //     const storedTodos = JSON.parse(localStorage.getItem("todos"));
+  //     if (storedTodos) {
+  //       setTodos(storedTodos);
+  //       // state.todos = [...state.todos, storedTodos];
 
+  //       console.log(typeof todos);
+  //     }
+  //   },
+  //   [],
+  //   snap
+  // );
+
+  // const storedTodos = JSON.parse(localStorage.getItem("todos"));
+  // if (storedTodos) {
+  //   setTodos(storedTodos);
+  //   state.todos = [...state.todos, storedTodos];
+  // }
   //   useEffect(() => {
   //     const storedTodos = JSON.parse(localStorage.getItem("todos"));
   //     if (storedTodos) {
@@ -24,11 +41,13 @@ const Home = () => {
   //       setTodos([]);
   //     }
   //   }, []);
+  // console.log("state", state);
+
   return (
     <div className=" flex items-center justify-center my-[200px] flex-col gap-14 ">
-      {todos.length > 0 &&
-        todos.map((todo) => {
-          console.log(todo); // Log each todo
+      {snap.todos.length > 0 &&
+        snap.todos.map((todo) => {
+          // console.log(todo, ++count); // Log each todo
           return <Task key={todo.id} todo={todo} />;
         })}
 

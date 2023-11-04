@@ -3,47 +3,60 @@ import { useState } from "react";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import close from "../assets/icons/x-close.svg";
 import Categories from "./Categories";
+import state, { addTodo } from "../store";
+import { useSnapshot } from "valtio";
 
-//category array
-// const categories = [
-//   { id: 1, category: "Health", unavailable: false },
-//   { id: 2, category: "Education", unavailable: false },
-//   { id: 3, category: "Persional", unavailable: false },
-//   { id: 4, category: "Family", unavailable: true },
-//   { id: 5, category: "Work", unavailable: false },
-// ];
+//ARRAY OF CATEGORIES
 const categories = [
-  { name: "Heath" },
-  { name: "Education" },
-  { name: "Persional" },
-  { name: "Family" },
-  { name: "Work" },
+  {
+    name: "Heath",
+    color: "#4942E4",
+    bg: "#190482",
+    border: "#4942E4",
+    text: "#C4B0FF",
+  },
+  {
+    name: "Education",
+    color: "#FEFFAC",
+    bg: "#45FFCA",
+    border: "#FFB6D9",
+    text: "#D67BFF",
+  },
+  {
+    name: "Persional",
+    color: "#00337C",
+    bg: "#13005A",
+    border: "#1C82AD",
+    text: "#03C988",
+  },
+  {
+    name: "Family",
+    color: "#3C79F5",
+    bg: "#6C00FF",
+    border: "#2DCDDF",
+    text: "#F2DEBA",
+  },
+  {
+    name: "Work",
+    color: "#176B87",
+    bg: "#04364A",
+    border: "#64CCC5",
+    text: "#DAFFFB",
+  },
 ];
 
+// categories: [
+//   { id: 1, name: "Home", emoji: "1f3e0", color: "#1fff44" },
+//   { id: 2, name: "Work", emoji: "1f3e2", color: "#248eff" },
+//   { id: 3, name: "Personal", emoji: "1f464", color: "#e843fe" },
+//   { id: 4, name: "Health/Fitness", emoji: "1f4aa", color: "#ffdf3d" },
+//   { id: 5, name: "Education", emoji: "1f4da", color: "#ff8e24" },
+// ],
+
 const Modal = () => {
+  const snap = useSnapshot(state);
+
   let [isOpen, setIsOpen] = useState(false);
-  //todos from storage
-  const [todos, setTodos] = useState([]);
-
-  //fetch todos form local storage
-  //   useEffect(() => {
-  //     const storedTodos = JSON.parse(localStorage.getItem("todos"));
-  //     if (storedTodos) {
-  //       setTodos(storedTodos);
-  //     }
-
-  //   }, []);
-  useEffect(() => {
-    const storedTodos = JSON.parse(localStorage.getItem("todos"));
-    if (storedTodos) {
-      const todosArray = Array.isArray(storedTodos)
-        ? storedTodos
-        : [storedTodos];
-      setTodos(todosArray);
-    } else {
-      setTodos([]);
-    }
-  }, []);
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [task, setTask] = useState("");
@@ -52,13 +65,22 @@ const Modal = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
+  useEffect(() => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+    if (storedTodos) {
+      state.todos = storedTodos;
+    }
+  }, []);
+
+  //HANDLE CATEGORY CHANGE
+
   const handleCategoryChange = (selectedCategory) => {
+    console.log(selectedCategory);
     setSelectedCategory(selectedCategory);
   };
 
+  //HANDLE SUBMIT
   const handleSubmit = async (e) => {
-    //FormEvent<HTMLFormElement> is used to specify the type of the e parameter in the handleSubmit function If you simply write e instead of specifying the type as FormEvent<HTMLFormElement>, TypeScript will still allow it, but you lose some of the benefits that TypeScript provides in terms of type checking and code documentation.
-    // prevent the page to reload
     e.preventDefault();
     setSubmitting(true);
 
@@ -68,39 +90,21 @@ const Modal = () => {
       task: task,
       discription: discription,
       date: date,
-      category: selectedCategory.name,
-      createdAt: Date.now(),
+      category: selectedCategory,
+      createdAt: new Date().toISOString(),
       completed: false,
     };
-    console.log(selectedCategory);
+    // console.log(selectedCategory);
 
-    // Serialize the todo object to a JSON string.
-    // const todoJson = JSON.stringify(newTodo);
-    // // Store the JSON string in local storage with the key `todos`.
-    // localStorage.setItem("todos", JSON.stringify([...todos, newTodo]));
-    // if (todos.length > 0) {
-    //   // Iterate over the todos array.
-    //   setTodos([...todos, newTodo]);
-    // }
+    addTodo(newTodo);
 
-    setTodos((prevTodos) => {
-      const updatedTodos = [...prevTodos, newTodo];
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
-      return updatedTodos;
-    });
-
+    //SET TO EMPTY
     setSubmitting(false);
     setTask("");
     setDiscription("");
     setSelectedCategory(categories[0]);
     setDate("");
     closeModel();
-
-    // const storedTodos = JSON.parse(localStorage.getItem("todos"));
-
-    // for (const todo of storedTodos) {
-    // console.log(storedTodos);
-    // }
   };
 
   //set date
@@ -122,18 +126,18 @@ const Modal = () => {
         // className="btn py-3 px-3 bg-white rounded-2xl"
         onClick={openModel}
       >
-        <div className="fixed bottom-[100px]  right-[100px] w-14 h-14  bg-purple-500 rounded-full flex items-center justify-center text-xl">
+        <div className="fixed bottom-[100px] shadowBg right-[100px] w-14 h-14  bg-purple-500 rounded-full flex items-center justify-center text-xl">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="34"
-            height="34"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="feather feather-plus bg-purple-500 "
+            className="feather feather-plus bg-purple-500  "
           >
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -240,7 +244,7 @@ const Modal = () => {
                       </label>
                       <input
                         required
-                        type="date"
+                        type="datetime-local"
                         id="date"
                         // value={discription}
                         onChange={handleChangeDate}

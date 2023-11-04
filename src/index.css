@@ -31,8 +31,8 @@ body {
 }
 
 /* shadow  */
-.shadow {
-  box-shadow: rgba(43, 43, 176, 0.2) 0px 7px 29px 0px;
+.shadowBg {
+  box-shadow: rgba(125, 49, 255, 0.695) 0px 7px 29px 0px;
 }
 
 .dialog-container {

@@ -2,7 +2,7 @@ import { useSnapshot } from "valtio";
 import logo from "../assets/icons/logo.svg";
 import state from "../store";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import { logOut } from "../store";
 
 const Navbar = () => {
@@ -30,11 +30,11 @@ const Navbar = () => {
       <div className="mx-auto max-w-8xl xl:px-8">
         <div className="flex items-center justify-around">
           <div className="flex items-center justify-center gap-6 border-b border-gray-800 px-4 py-5 sm:px-6 lg:px-8 xl:px-0">
-            <a className="block" href="/">
+            <Link className="block" href="/">
               <div className="w-10 ">
                 <img src={logo} alt="logo" />
               </div>
-            </a>
+            </Link>
             <div className="text-[25px] font-bold text-indigo-500 text-gradient_blue-purple">
               Todo List
             </div>

@@ -72,20 +72,20 @@ const TaskOptions = ({ id, todo }) => {
             aria-orientation="vertical"
             aria-labelledby="options-menu"
           >
-            <a
+            <Link
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={handleEdit}
             >
               Edit
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={handleDelete}
             >
               Delete
-            </a>
+            </Link>
           </div>
         </div>
       )}

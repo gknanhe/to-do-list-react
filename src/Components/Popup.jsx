@@ -3,7 +3,7 @@ import { useSnapshot } from "valtio";
 import state, { openModal, closeModal } from "../store";
 import { deleteTodo } from "../store";
 import { toast } from "react-toastify";
-
+import { Link } from "react-router-dom";
 const TaskOptions = ({ id, todo }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 

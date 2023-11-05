@@ -3,7 +3,6 @@ import moment from "moment/moment";
 import TaskOptions from "./Popup";
 import logo from "../assets/icons/logo.svg";
 import { markAsDone } from "../store";
-
 const Task = ({ todo }) => {
   const formattedDate = moment(todo.createdAt).format(
     "DD/MM/YYYY • HH:mm • ddd"

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSnapshot } from "valtio";
 import state, { openModal, closeModal } from "../store";
 import { deleteTodo } from "../store";
+import { toast } from "react-toastify";
 
 const TaskOptions = ({ id, todo }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -11,7 +12,13 @@ const TaskOptions = ({ id, todo }) => {
   //DELETE TODO
   const handleDelete = () => {
     // Call the deleteTodo function with the todo id
-    deleteTodo(id);
+    const deleted = deleteTodo(id);
+    if (deleted) {
+      toast.success("Todo deleted", {
+        autoClose: 5000,
+        theme: "dark",
+      });
+    }
   };
 
   const handleEdit = () => {

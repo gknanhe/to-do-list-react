@@ -62,3 +62,10 @@ body {
 .dialog-btn {
   @apply px-5 py-3 text-white  bg-black text-base font-semibold border  rounded-lg mt-8;
 }
+
+.text-gradient_blue-purple {
+  background: linear-gradient(90deg, #4ca5ff, #b573f8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

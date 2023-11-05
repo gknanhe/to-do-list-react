@@ -5,6 +5,7 @@ import close from "../assets/icons/x-close.svg";
 import Categories from "./Categories";
 import state, { addTodo, openModal, closeModal, editTodo } from "../store";
 import { useSnapshot } from "valtio";
+import { toast } from "react-toastify";
 
 //ARRAY OF CATEGORIES
 const categories = [
@@ -104,7 +105,14 @@ const Modal = () => {
         category: selectedCategory,
       };
 
-      editTodo(updatedTodo);
+      const edited = editTodo(updatedTodo);
+
+      if (edited) {
+        toast.success("Todo Edited", {
+          autoClose: 5000,
+          theme: "dark",
+        });
+      }
     } else {
       //create new to do
       newTodo = {
@@ -117,8 +125,21 @@ const Modal = () => {
         completed: false,
       };
       // console.log(selectedCategory);
+      const added = addTodo(newTodo);
 
-      addTodo(newTodo);
+      if (added) {
+        toast.success("Todo Added!!!", {
+          autoClose: 5000,
+          theme: "dark",
+        });
+      }
+      // const isAdded = addTodo(newTodo);
+      // if (isAdded) {
+      //   toast.success("Todo added!!!", {
+      //     autoClose: 5000,
+      //     theme: "dark",
+      //   });
+      // }
     }
 
     //SET TO EMPTY

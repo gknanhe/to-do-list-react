@@ -1,10 +1,56 @@
 import { proxy } from "valtio";
 
 const state = proxy({
+  users: JSON.parse(localStorage.getItem("users")) || [],
+  //for logedinUser
+  loggedUser: JSON.parse(localStorage.getItem("loggedUser")) || null,
   todos: [],
   isOpen: false,
   editingTodo: null, // Initialize editingTodo as null
 });
+
+export const signup = (email, password) => {
+  // Validate input (add more validation as needed)
+  const user = state.users.find((user) => user.email === email);
+
+  if (user) {
+    return "exist";
+  }
+
+  // Create user object
+  const newUser = {
+    id: Date.now(), // You can use a more robust method for generating IDs
+    email,
+    password,
+  };
+
+  // Save user to local storage using Valtio
+  state.users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(state.users));
+
+  // Return the newly created user
+  return newUser;
+};
+
+export const signin = (email, password) => {
+  // if(state.users.length>0 )
+  // {
+  const user = state.users.find(
+    (user) => user.email == email && user.password == password
+  );
+  // }
+
+  state.loggedUser = user;
+  localStorage.setItem("loggedUser", JSON.stringify(user));
+
+  return !!user;
+};
+
+//Log Out
+export const logOut = () => {
+  state.loggedUser = null;
+  localStorage.setItem("loggedUser", null);
+};
 
 export const openModal = (todo = null) => {
   state.isOpen = true;
@@ -21,6 +67,8 @@ export const addTodo = (newTodo) => {
   state.todos = [newTodo, ...state.todos];
 
   localStorage.setItem("todos", JSON.stringify(state.todos));
+
+  return true;
 };
 
 export const editTodo = (updatedTodo) => {
@@ -29,6 +77,8 @@ export const editTodo = (updatedTodo) => {
   );
   localStorage.setItem("todos", JSON.stringify(state.todos));
   closeModal();
+
+  return true;
 };
 
 //FUNCTION TO DELETE TO DO
@@ -43,6 +93,8 @@ export const deleteTodo = (todoId) => {
     // Update local storage with the modified todos array
     localStorage.setItem("todos", JSON.stringify(state.todos));
   }
+
+  return true;
 };
 
 // New function to mark a todo as done

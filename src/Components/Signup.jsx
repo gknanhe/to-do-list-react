@@ -18,7 +18,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (password != confirmPassword) {
-      toast.error("Please fill all fields", {
+      toast.error("Password not matched", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -28,7 +28,6 @@ const Signup = () => {
         progress: undefined,
         theme: "dark",
       });
-      error = true;
 
       setEmail("");
       setPassword("");
@@ -39,7 +38,7 @@ const Signup = () => {
     const isSuccess = signup(email, password);
 
     if (isSuccess === "exist") {
-      toast.error("Email already exist, Please Signin", {
+      toast.error("Email already exist, Please Sign in", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -110,7 +109,7 @@ const Signup = () => {
                     value={email}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
-                    required=""
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
@@ -129,7 +128,7 @@ const Signup = () => {
                     value={password}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={(e) => setPassword(e.target.value)}
-                    required=""
+                    required
                   />
                 </div>
                 <div>
@@ -147,7 +146,7 @@ const Signup = () => {
                     value={confirmPassword}
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    required=""
+                    required
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -158,7 +157,6 @@ const Signup = () => {
                         aria-describedby="remember"
                         type="checkbox"
                         className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required=""
                       />
                     </div>
                     <div className="ml-3 text-sm">

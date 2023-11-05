@@ -2,18 +2,56 @@
 
 this is simple todo list app where user can create , update, delete, and mark as done to todods.
 
-## Usage
+<br/>
+<p align="center">
+  <img  width="auto" src="https://github.com/gknanhe/codeial-react-cn/assets/74034986/1c37d066-730e-4e2b-a86f-442894c1178f">
+<!-- <img height="400" width="800" src="https://user-images.githubusercontent.com/76626529/182868886-3f26cbc9-f619-4250-8951-0d834805251c.png"> -->
+</p>
+<br/>
 
-1. to add todo click on + icon 
-2. to edit and delete click on 3 dots.
+## Features
+
+- User authentication (signup, login, logout)
+- Add, edit, and delete tasks
+- Responsive design
+
+## Technologies Used
+
+- React
+- Valtio (for state management)
+- Tailwind CSS (for styling)
+- React Router (for client-side routing)
+- Local storage (for data persistence)
+
+## Folder structure
+
+        /
+        |-- public/
+        |-- src/
+            |-- assets/
+            |-- components/
+            |-- store/
+            |-- App.js
+            |-- index.js
+        |-- .gitignore
+        |-- package.json
+        |-- README.md
+
+## Getting Started
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/gknanhe/to-do-list-react.git
+   ```
 
 ## Installation
 
 fork the repo or download the code.
 in vs code run
 
-    ``` npm install
-    
+     ``` npm install
+
 To run the App
 
     ``` npm run dev

@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="mx-auto max-w-8xl xl:px-8">
         <div className="flex items-center justify-around">
           <div className="flex items-center justify-center gap-6 border-b border-gray-800 px-4 py-5 sm:px-6 lg:px-8 xl:px-0">
-            <Link className="block" href="/">
+            <Link className="block" to="/">
               <div className="w-10 ">
                 <img src={logo} alt="logo" />
               </div>

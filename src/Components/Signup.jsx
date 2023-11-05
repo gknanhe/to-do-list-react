@@ -80,7 +80,7 @@ const Signup = () => {
       <section className="bg-gray-50 dark:bg-gray-900 ">
         <div className="flex flex-col items-center h-screen justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <Link
-            href="#"
+            to="#"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <img className="w-8 h-8 mr-2 " src={logoSvg} alt="logo" />
@@ -171,7 +171,7 @@ const Signup = () => {
                     </div>
                   </div>
                   <Link
-                    href="#"
+                    to="#"
                     className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Forgot password?
@@ -186,7 +186,7 @@ const Signup = () => {
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <Link
-                    href="/login"
+                    to="/login"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Sign in

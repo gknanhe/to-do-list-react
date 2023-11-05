@@ -3,7 +3,18 @@ import { proxy } from "valtio";
 const state = proxy({
   users: JSON.parse(localStorage.getItem("users")) || [],
   //for logedinUser
-  loggedUser: JSON.parse(localStorage.getItem("loggedUser")) || null,
+  // loggedUser: JSON.parse(localStorage.getItem("loggedUser")) || null,
+
+  loggedUser: (() => {
+    const storedUser = localStorage.getItem("loggedUser");
+    try {
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Error parsing loggedUser:", error);
+      return null;
+    }
+  })(),
+
   todos: [],
   isOpen: false,
   editingTodo: null, // Initialize editingTodo as null

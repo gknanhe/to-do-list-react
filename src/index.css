@@ -69,3 +69,19 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.heading1 {
+  /* font-size: 64px; */
+  font-weight: 700;
+  line-height: 67.2px;
+}
+/* .heading2 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 50.4px;
+}
+.heading3,
+.heading3-medium {
+  font-size: 32px;
+  line-height: 33.6px;
+} */

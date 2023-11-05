@@ -52,13 +52,16 @@ const Home = () => {
   // console.log("state", state);
 
   return (
-    <div className=" flex items-center justify-center my-[200px] flex-col gap-14 ">
-      {snap.todos.length > 0 &&
-        snap.todos.map((todo) => {
-          // console.log(todo, ++count); // Log each todo
-          return <Task todo={todo} key={todo.id} />;
-        })}
-
+    <div className="flex items-center justify-center my-[100px] flex-col gap-14">
+      {snap.todos.length === 0 ? (
+        <div className="flex items-center justify-center max-w-screen-sm mx-auto">
+          <span className="text-gradient_blue-purple text-[44px] heading1 flex items-center justify-center h-screen p-4">
+            No Todos yet! Add a New Todo
+          </span>
+        </div>
+      ) : (
+        snap.todos.map((todo) => <Task todo={todo} key={todo.id} />)
+      )}
       <Modal />
     </div>
   );

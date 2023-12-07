@@ -83,6 +83,7 @@ const customFetch = async (
   url,
   method = "GET",
   data = null,
+  titleQuery = null,
   authToken = null
 ) => {
   authToken = window.localStorage.getItem("authToken");
@@ -100,8 +101,20 @@ const customFetch = async (
   let apiUrl = `${BASE_URL}/${url}`;
 
   // If it's a GET request and there's data (e.g., user ID), append it to the URL
+  // if (method === "GET" && data) {
+  //   apiUrl += `?userId=${data}`;
+  // }
+
+  // if (titleQuery) {
+  //   apiUrl += `?title=${encodeURIComponent(titleQuery)}`;
+  // }
+
   if (method === "GET" && data) {
-    apiUrl += `?userId=${data}`;
+    apiUrl += `/${data}`;
+  }
+
+  if (titleQuery) {
+    apiUrl += `/${encodeURIComponent(titleQuery)}`;
   }
 
   const options = {
@@ -130,6 +143,61 @@ const customFetch = async (
 // export default customFetch;
 
 //api Call
+
+export const searchTodo = async (title) => {
+  const response = await customFetch(
+    "search-todo",
+    "GET",
+    state.loggedUser.user._id,
+    title
+  );
+
+  // console.log(response);
+  if (response.todos.length > 0) {
+    state.todos = response.todos;
+    console.log(state.todos);
+  } else {
+    state.todos = [];
+  }
+};
+
+export const fetchTodosByFilter = async (filter) => {
+  console.log(filter);
+  if (filter !== "All") {
+    const response = await customFetch(
+      "filter-todo",
+      "GET",
+      state.loggedUser.user._id,
+      filter
+    );
+    console.log("filtered to", response);
+    if (response.todos.length > 0) {
+      state.todos = response.todos;
+      console.log(state.todos);
+    } else {
+      state.todos = [];
+    }
+  } else {
+    try {
+      // console.log("fetch func", id);
+      const response = await customFetch(
+        `get-todos`,
+        "GET",
+        state.loggedUser.user._id
+      );
+      console.log("todo response", response.todos);
+      if (response.todos.length > 0) {
+        state.todos = response.todos;
+        console.log(state.todos);
+      } else {
+        state.todos = [];
+      }
+    } catch (error) {
+      console.error("Error during fetchAllTodos:", error);
+      return null; // or handle the error as needed
+    }
+  }
+};
 
 export const signup = async (email, password) => {
   // Validate input (add more validation as needed)
@@ -237,7 +305,7 @@ export const editTodo = async (updatedTodo) => {
   console.log("edited response", response);
   if (response.success) {
     state.todos = state.todos.map((todo) =>
-      todo.id === updatedTodo.id ? response.todo : todo
+      todo._id === updatedTodo._id ? response.todo : todo
     );
     // localStorage.setItem("todos", JSON.stringify(state.todos));
     closeModal();
